@@ -4,13 +4,21 @@ const posts = require("../data");
 
 // Index
 router.get(`/`, (req, res) => {
-    res.json(posts);
+    res.json({
+        data: posts,
+        count: posts.length
+    });
 });
 
 // Show
 router.get(`/:id`, (req, res) => {
     const postsId = req.params.id;
-    res.json("Prelevo i dettagli del post " + postsId);
+    const post = posts.find(p => p.id == postsId);
+    if (post) {
+        res.json(post);
+    } else {
+        res.status(404).send(`Post ${postsId} non trovato`);
+    }
 });
 
 // Create
